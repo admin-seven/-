@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yy.dao.NetfollowsDao">
+	<select id="selectNetfollows" parameterType="fenye" resultType="Netfollows">
+		select *from `netfollows` n,student s,users u
+
+		<where>
+			<if test="netfollows.studentName!=null and netfollows.studentName!=''">
+				and studentName like "%"#{netfollows.studentName}"%"
+			</if>
+			<if test="netfollows.followState!=null and netfollows.followState!=''">
+				and followState =#{netfollows.followState}
+			</if>
+			<if test="netfollows.followType!=null and netfollows.followType!=''">
+				and followType =#{netfollows.followType}
+			</if>
+			<if test="netfollows.followTime!=null and netfollows.followTime!=''">
+				and followTime like "%"#{netfollows.followTime}"%"
+			</if>
+			<if
+				test="netfollows.nextFollowTime!=null and netfollows.nextFollowTime!=''">
+				and nextFollowTime like "%"#{netfollows.nextFollowTime}"%"
+			</if>
+			AND n.studentId = s.id
+			AND u.id = n.userId
+			AND u.loginName=#{netfollows.loginName}
+
+
+		</where>
+
+		limit #{page},#{pageSize}
+	</select>
+	<select id="countNetfollows" parameterType="fenye" resultType="int">
+		select count(*) from `netfollows` n,student s,users u
+		<where>
+			<if test="netfollows.studentName!=null and netfollows.studentName!=''">
+				and studentName like "%"#{netfollows.studentName}"%"
+			</if>
+			<if test="netfollows.followState!=null and netfollows.followState!=''">
+				and followState =#{netfollows.followState}
+			</if>
+			<if test="netfollows.followType!=null and netfollows.followType!=''">
+				and followType =#{netfollows.followType}
+			</if>
+			<if test="netfollows.followTime!=null and netfollows.followTime!=''">
+				and followTime like "%"#{netfollows.followTime}"%"
+			</if>
+			<if
+				test="netfollows.nextFollowTime!=null and netfollows.nextFollowTime!=''">
+				and nextFollowTime like "%"#{netfollows.nextFollowTime}"%"
+			</if>
+			AND n.studentId = s.id
+			AND u.id = n.userId
+			AND u.loginName=#{netfollows.loginName}
+
+
+		</where>
+	</select>
+
+	<!-- <insert id="addNetfollows" parameterType="netfollows">
+		insert into netfollows (roleid,moduleId)values(#{roleId},#{moduleId})
+	</insert> -->
+
+</mapper>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yy.dao.UserchecksDao">
+	<!-- 添加员工签到信息 -->
+	<insert id="addUsercheck" parameterType="Userchecks">
+		insert into userchecks
+		(userid,username,checkintime,checkstate,isCancel)
+		values(#{userId},#{userName},#{checkInTime},#{checkState},#{isCancel})
+	</insert>
+
+
+	<!-- 查询员工签到 -->
+	<select id="selectCheckUserJinTian" parameterType="Userchecks"
+		resultType="Userchecks">
+		SELECT id,userId,userName,checkInTime,checkState,isCancel,checkOutTime
+		FROM `userchecks`
+		<where>
+			<if test="checkInTime !=null and checkInTime != ''">
+				and checkInTime like "%"#{checkInTime}"%"
+			</if>
+			<if test="userId >0 ">
+				and userId =#{userId}
+			</if>
+			<if test="isCancel !=null and isCancel !=''">
+				and isCancel = #{isCancel}
+			</if>
+			<if test="checkOutTime !=null and checkOutTime !=''">
+				and checkOutTime like "%"#{checkOutTime}"%"
+			</if>
+			<if test="userName !=null and userName !=''">
+				and userName like "%"#{userName}"%"
+			</if>
+			<if test="checkState !=null and checkState!=''">
+				checkState =#{checkState}
+			</if>
+		</where>
+	</select>
+<!-- 查询签到情况selectCheckUser -->
+<select id="selectCheckUser" parameterType="Fenye"
+		resultType="Userchecks">
+		SELECT id,userId,userName,checkInTime,checkState,isCancel,checkOutTime
+		FROM `userchecks`
+		<where>
+			<if test="userchecks.checkInTime !=null and userchecks.checkInTime != ''">
+				and checkInTime like "%"#{userchecks.checkInTime}"%"
+			</if>
+			<if test="userchecks.userId >0 ">
+				and userId =#{userchecks.userId}
+			</if>
+			<if test="userchecks.isCancel !=null and userchecks.isCancel !=''">
+				and isCancel =#{userchecks.isCancel}
+			</if>
+			<if test="userchecks.checkOutTime !=null and userchecks.checkOutTime !=''">
+				and checkOutTime like "%"#{userchecks.checkOutTime}"%"
+			</if>
+			<if test="userchecks.userName !=null and userchecks.userName !=''">
+				and userName like "%"#{userchecks.userName}"%"
+			</if>
+			<if test="userchecks.checkState !=null and userchecks.checkState !=''">
+				and checkState =#{userchecks.checkState}
+			</if>
+		</where>
+	</select>
+	<!-- 查询总条数 -->
+	<select id="selectCheckUserCount" parameterType="Fenye"
+		resultType="_int">
+		SELECT  count(id)
+		FROM `userchecks`
+		<where>
+			<if test="userchecks.checkInTime !=null and userchecks.checkInTime != ''">
+				and checkInTime like "%"#{userchecks.checkInTime}"%"
+			</if>
+			<if test="userchecks.userId >0 ">
+				and userId =#{userchecks.userId}
+			</if>
+			<if test="userchecks.isCancel !=null and userchecks.isCancel !=''">
+				and isCancel = #{userchecks.isCancel}
+			</if>
+			<if test="userchecks.checkOutTime !=null and userchecks.checkOutTime !=''">
+				and checkOutTime like "%"#{userchecks.checkOutTime}"%"
+			</if>
+			<if test="userchecks.userName !=null and userchecks.userName !=''">
+				and userName like "%"#{userchecks.userName}"%"
+			</if>
+			<if test="userchecks.checkState !=null and userchecks.checkState !=''">
+				and checkState =#{userchecks.checkState}
+			</if>
+		</where>
+	</select>
+	<!--添加签到信息 -->
+	<update id="updateUserCheck" parameterType="Userchecks">
+		update userchecks
+		<set>
+			<if test="isCancel !=null and isCancel !='' ">
+				isCancel =#{isCancel},
+			</if>
+			<if test="checkOutTime !=null and checkOutTime !=''">
+				checkOutTime=#{checkOutTime},
+			</if>
+
+		</set>
+		<where>
+			userid=#{userId}
+			and checkInTime = #{checkInTime}
+		</where>
+	</update>
+	
+	<!-- updateUserCheckQC -->
+	<update id="updateUserCheckQC" parameterType="Userchecks">
+	update userchecks
+		<set>
+			<if test="isCancel !=null and isCancel !='' ">
+				isCancel =#{isCancel},
+			</if>
+			<if test="checkOutTime !=null and checkOutTime !=''">
+				checkOutTime=#{checkOutTime},
+			</if>
+
+		</set>
+		<where>
+			id=#{Id}
+		</where>
+	</update>
+</mapper>

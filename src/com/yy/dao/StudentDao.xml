@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yy.dao.StudentDao">
+
+	<select id="selectAll" parameterType="fenye" resultType="student">
+		select
+		id,name,sex,age,phone,status,state,dafen,msgSource,sourceUrl,sourceKeyWorld,address,
+		netPusherId,askerId,qq,weixin,content,createTime,learnForward,isValid,record,isReturnVist,
+		firstVistTime,isHome,homeTime,lostValid,isPay,payTime,money,isReturnMoney,isInClass,inClassTime,
+		inClassContent,askerContent,isDel,formPart,concern,isBaoBei,ziXunName,createUser,returnMoneyReason,
+		preMoney,preMoneyTime FROM student
+		<where>
+			<if test=" student.name!=null and student.name!=''">
+				and name like "%"#{student.name}"%"
+			</if>
+			<if test=" student.phone!=null and student.phone!=''">
+				and phone = #{student.phone}
+			</if>
+			<if test=" student.ziXunName!=null and student.ziXunName!=''">
+				and ziXunName like "%"#{student.ziXunName}"%"
+			</if>
+			<if test=" student.isPay!=null and student.isPay!=''">
+				and isPay = #{student.isPay}
+			</if>
+			<if test=" student.isValid!=null and student.isValid!=''">
+				and isValid = #{student.isValid}
+			</if>
+			<if test=" student.isReturnVist!=null and student.isReturnVist!=''">
+				and isReturnVist = #{student.isReturnVist}
+			</if>
+			<if test=" student.qq!=null and student.qq!=''">
+				and qq = #{student.qq}
+			</if>
+			<if test=" student.createTime!=null and student.createTime!=''">
+				and createTime like "%"#{student.createTime}"%"
+			</if>
+			<if test=" student.homeTime!=null and student.homeTime!=''">
+				and homeTime like "%"#{student.homeTime}"%"
+			</if>
+			<if test=" student.firstVistTime!=null and student.firstVistTime!=''">
+				and firstVistTimelike "%"#{student.firstVistTime}"%"
+			</if>
+			<if test=" student.payTime!=null and student.payTime!=''">
+				and payTime like "%"#{student.payTime}"%"
+			</if>
+			<if test=" student.inClassTime!=null and student.inClassTime!=''">
+				and inClassTime like "%"#{student.inClassTime}"%"
+			</if>
+		</where>
+		limit #{page},#{pageSize}
+	</select>
+	<!-- 查詢所有未分配學生selectStuAll -->
+	<select id="selectStuAll" resultType="student">
+		SELECT * FROM `student`
+		where netPusherId is null;
+	</select>
+	<!-- 查询管理学生 -->
+	<select id="selectMyStuBynetPusherId" parameterType="int"
+		resultType="student">
+		SELECT * FROM `student` where netPusherId = #{netPusherId};
+	</select>
+	<!-- 查詢總條數 -->
+	<select id="selectCount" parameterType="fenye" resultType="int">
+		select count(*) from student
+		<where>
+			<if test=" student.name!=null and student.name!=''">
+				and name like "%"#{student.name}"%"
+			</if>
+			<if test=" student.phone!=null and student.phone!=''">
+				and phone = #{student.phone}
+			</if>
+			<if test=" student.ziXunName!=null and student.ziXunName!=''">
+				and ziXunName like "%"#{student.ziXunName}"%"
+			</if>
+			<if test=" student.isPay!=null and student.isPay!=''">
+				and isPay = #{student.isPay}
+			</if>
+			<if test=" student.isValid!=null and student.isValid!=''">
+				and isValid = #{student.isValid}
+			</if>
+			<if test=" student.isReturnVist!=null and student.isReturnVist!=''">
+				and isReturnVist = #{student.isReturnVist}
+			</if>
+			<if test=" student.qq!=null and student.qq!=''">
+				and qq = #{student.qq}
+			</if>
+			<if test=" student.createTime!=null and student.createTime!=''">
+				and createTime like "%"#{student.createTime}"%"
+			</if>
+			<if test=" student.homeTime!=null and student.homeTime!=''">
+				and homeTime like "%"#{student.homeTime}"%"
+			</if>
+			<if test=" student.firstVistTime!=null and student.firstVistTime!=''">
+				and firstVistTimelike "%"#{student.firstVistTime}"%"
+			</if>
+			<if test=" student.payTime!=null and student.payTime!=''">
+				and payTime like "%"#{student.payTime}"%"
+			</if>
+			<if test=" student.inClassTime!=null and student.inClassTime!=''">
+				and inClassTime like "%"#{student.inClassTime}"%"
+			</if>
+		</where>
+	</select>
+
+	<insert id="addStu" parameterType="student">
+		insert into
+		student(name,sex,age,phone,status,state,msgSource,sourceUrl,sourceKeyWorld,qq,weixin,isBaoBei,content)
+		values(#{name},#{sex},#{age},#{phone},#{status},#{state},#{msgSource},#{sourceUrl},#{sourceKeyWorld},#{qq},#{weixin},#{isBaoBei},#{content})
+	</insert>
+	<update id="updateStu" parameterType="student">
+		update student
+		<set>
+			<if test=" name!=null and name!=''">
+				name=#{name},
+			</if>
+			<if test=" sex!=null and sex!=''">
+				sex=#{sex},
+			</if>
+			<if test=" age!=null and age!=''">
+				age=#{age},
+			</if>
+			<if test=" phone!=null and phone!='' ">
+				phone=#{phone},
+			</if>
+			<if test=" status!=null and status!='' ">
+				status=#{status},
+			</if>
+			<if test="state!=null and state!=''">
+				state=#{state},
+			</if>
+			<if test=" msgSource!=null and msgSource!='' ">
+				msgSource=#{msgSource},
+			</if>
+			<if test=" sourceUrl!=null and sourceUrl!='' ">
+				sourceUrl=#{sourceUrl},
+			</if>
+			<if test=" sourceKeyWorld!=null and sourceKeyWorld!='' ">
+				sourceKeyWorld=#{sourceKeyWorld},
+			</if>
+			<if test=" address!=null and address!='' ">
+				address=#{address},
+			</if>
+			<if test=" qq!=null and qq!='' ">
+				qq=#{qq},
+			</if>
+			<if test=" weixin!=null and weixin!='' ">
+				weixin=#{weixin},
+			</if>
+			<if test=" learnForward!=null and learnForward!='' ">
+				learnForward=#{learnForward},
+			</if>
+			<if test=" isBaoBei!=null and isBaoBei!='' ">
+				isBaoBei=#{isBaoBei},
+			</if>
+			<if test=" ziXunName!=null and ziXunName!='' ">
+				ziXunName=#{ziXunName},
+			</if>
+			<if test=" createUser!=null and createUser!='' ">
+				createUser=#{createUser},
+			</if>
+			<if test=" concern!=null and concern!='' ">
+				concern=#{concern},
+			</if>
+		</set>
+		<where>
+			id=#{id}
+		</where>
+	</update>
+	<!-- 查询网络学生 -->
+	<select id="selectOnlineStu" parameterType="fenye" resultType="student">
+		SELECT
+		id,createTime,name,ziXunName,sex,age,phone,`status`,state,address,qq,formPart,isValid,isReturnVist,isHome,homeTime
+		FROM student
+		<where>
+			<if test=" student.name!=null and student.name!=''">
+				and name like "%"#{student.name}"%"
+			</if>
+			<if test=" student.age!=null and student.age!=''">
+				and age =#{student.age}
+			</if>
+			<if test=" student.sex!=null and student.sex!=''">
+				and sex =#{student.sex}
+			</if>
+			<if test=" student.weixin!=null and student.weixin!=''">
+				and weixin like "%"#{student.weixin}"%"
+			</if>
+			<if test=" student.phone!=null and student.phone!=''">
+				and phone = #{student.phone}
+			</if>
+			<if test=" student.isValid!=null and student.isValid!=''">
+				and isValid = #{student.isValid}
+			</if>
+			<if test=" student.qq!=null and student.qq!=''">
+				and qq like "%"#{student.qq}"%"
+			</if>
+
+			<if test="userId >0">
+				and netPusherId=#{userId}
+			</if>
+		</where>
+		limit #{page},#{pageSize}
+	</select>
+	<!-- 查询网络学生总条数 -->
+	<select id="CountOnlineStu" parameterType="fenye" resultType="int">
+		select count(*) from student
+		<where>
+			<if test=" student.name!=null and student.name!=''">
+				and name like "%"#{student.name}"%"
+			</if>
+			<if test=" student.age!=null and student.age!=''">
+				and age =#{student.age}
+			</if>
+			<if test=" student.sex!=null and student.sex!=''">
+				and sex =#{student.sex}
+			</if>
+			<if test=" student.weixin!=null and student.weixin!=''">
+				and weixin like "%"#{student.weixin}"%"
+			</if>
+			<if test=" student.phone!=null and student.phone!=''">
+				and phone = #{student.phone}
+			</if>
+			<if test=" student.isValid!=null and student.isValid!=''">
+				and isValid = #{student.isValid}
+			</if>
+			<if test=" student.qq!=null and student.qq!=''">
+				and qq like "%"#{student.qq}"%"
+			</if>
+			<if test="userId >0">
+				and netPusherId=#{userId}
+			</if>
+		</where>
+	</select>
+	<!-- 查询我的学生 -->
+	<select id="selectMyStu" parameterType="fenye" resultType="student">
+		select
+		id,name,sex,age,phone,status,state,dafen,msgSource,sourceUrl,sourceKeyWorld,address,
+		netPusherId,askerId,qq,weixin,content,createTime,learnForward,isValid,record,isReturnVist,
+		firstVistTime,isHome,homeTime,lostValid,isPay,payTime,money,isReturnMoney,isInClass,inClassTime,
+		inClassContent,askerContent,isDel,formPart,concern,isBaoBei,ziXunName,createUser,returnMoneyReason,
+		preMoney,preMoneyTime FROM student
+		<where>
+			<if test=" student.name!=null and student.name!=''">
+				and name like "%"#{student.name}"%"
+			</if>
+			<if test=" student.phone!=null and student.phone!=''">
+				and phone = #{student.phone}
+			</if>
+			<if test=" student.ziXunName!=null and student.ziXunName!=''">
+				and ziXunName like "%"#{student.ziXunName}"%"
+			</if>
+			<if test=" student.isPay!=null and student.isPay!=''">
+				and isPay = #{student.isPay}
+			</if>
+			<if test=" student.isValid!=null and student.isValid!=''">
+				and isValid = #{student.isValid}
+			</if>
+			<if test=" student.isReturnVist!=null and student.isReturnVist!=''">
+				and isReturnVist = #{student.isReturnVist}
+			</if>
+			<if test=" student.qq!=null and student.qq!=''">
+				and qq = #{student.qq}
+			</if>
+			<if test=" student.createTime!=null and student.createTime!=''">
+				and createTime like "%"#{student.createTime}"%"
+			</if>
+			<if test=" student.homeTime!=null and student.homeTime!=''">
+				and homeTime like "%"#{student.homeTime}"%"
+			</if>
+			<if test=" student.firstVistTime!=null and student.firstVistTime!=''">
+				and firstVistTimelike "%"#{student.firstVistTime}"%"
+			</if>
+			<if test=" student.payTime!=null and student.payTime!=''">
+				and payTime like "%"#{student.payTime}"%"
+			</if>
+			<if test=" student.inClassTime!=null and student.inClassTime!=''">
+				and inClassTime like "%"#{student.inClassTime}"%"
+			</if>
+			<if test="userId >0">
+				and netPusherId=#{userId}
+			</if>
+		</where>
+		limit #{page},#{pageSize}
+	</select>
+	<!-- 查询我的学生总条数 -->
+	<select id="CountMyStu" parameterType="fenye" resultType="_int">
+		select count(*) from student
+		<where>
+			<if test=" student.name!=null and student.name!=''">
+				and name like "%"#{student.name}"%"
+			</if>
+			<if test=" student.phone!=null and student.phone!=''">
+				and phone = #{student.phone}
+			</if>
+			<if test=" student.ziXunName!=null and student.ziXunName!=''">
+				and ziXunName like "%"#{student.ziXunName}"%"
+			</if>
+			<if test=" student.isPay!=null and student.isPay!=''">
+				and isPay = #{student.isPay}
+			</if>
+			<if test=" student.isValid!=null and student.isValid!=''">
+				and isValid = #{student.isValid}
+			</if>
+			<if test=" student.isReturnVist!=null and student.isReturnVist!=''">
+				and isReturnVist = #{student.isReturnVist}
+			</if>
+			<if test=" student.qq!=null and student.qq!=''">
+				and qq = #{student.qq}
+			</if>
+			<if test=" student.createTime!=null and student.createTime!=''">
+				and createTime like "%"#{student.createTime}"%"
+			</if>
+			<if test=" student.homeTime!=null and student.homeTime!=''">
+				and homeTime like "%"#{student.homeTime}"%"
+			</if>
+			<if test=" student.firstVistTime!=null and student.firstVistTime!=''">
+				and firstVistTimelike "%"#{student.firstVistTime}"%"
+			</if>
+			<if test=" student.payTime!=null and student.payTime!=''">
+				and payTime like "%"#{student.payTime}"%"
+			</if>
+			<if test=" student.inClassTime!=null and student.inClassTime!=''">
+				and inClassTime like "%"#{student.inClassTime}"%"
+			</if>
+			<if test="userId >0">
+				and netPusherId=#{userId}
+			</if>
+			<if test="userId >0">
+				and netPusherId=#{userId}
+			</if>
+		</where>
+	</select>
+
+	<insert id="addOnlineStu" parameterType="student">
+		insert into
+		student(createTime,name,sex,age,phone,status,state,formPart,qq,weixin,isBaoBei,homeTime)
+		values(#{createTime},#{name},#{sex},#{age},#{phone},#{status},#{state},#{formPart},#{qq},#{weixin},#{isBaoBei},#{homeTime})
+	</insert>
+	<insert id="addNetfollows" parameterType="netfollows">
+		insert into
+		netfollows(studentId,studentName,userId,followType,content,followState,followTime)
+		values(#{studentId},#{studentName},#{userId},#{followType},#{content},#{followState},#{followTime})
+	</insert>
+</mapper>

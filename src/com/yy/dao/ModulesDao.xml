@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yy.dao.ModulesDao">
+	<select id="selectModules" parameterType="list" resultType="Modules">
+		SELECT id,text,parentId,path,weight FROM `modules`
+		<where>
+			id in
+			<foreach collection="list" item="item" index="index" open="("
+				separator="," close=")">
+				#{item}
+			</foreach>
+
+		</where>
+	</select>
+	<!-- 根据parentId查模块 -->
+	<select id="selectModulesByParentId" parameterType="int"
+		resultType="Modules">
+		SELECT id,text,parentId,path,weight FROM `modules`
+		<where>
+			parentId=#{parentId}
+		</where>
+	</select>
+	<!-- 查询 所有子类 -->
+	<select id="selectChildrenModules" parameterType="Modules"
+		resultType="Modules">
+		SELECT id,text,parentId,path,weight FROM `modules`
+	</select>
+	<!-- 添加子节点 -->
+	<insert id="addModules" parameterType="Modules">
+	INSERT INTO modules
+		(text,parentId)
+		values(#{text},#{parentId})
+	</insert>
+	<!-- 删除子节点 -->
+	<delete id="deleteModules" parameterType="int">
+	DELETE FROM modules
+		WHERE id=#{id}
+	</delete>
+	
+</mapper>

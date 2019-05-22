@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yy.dao.AskersDao">
+	<select id="selectAllAskers" parameterType="fenye" resultType="Askers">
+		SELECT askerId,askerName,roleName,checkintime,weight,userid,bakContent FROM askers ORDER BY weight DESC
+		limit #{page},#{pageSize}
+	</select>
+	<select id="selectCountAskers" parameterType="fenye" resultType="int">
+		SELECT COUNT(*) FROM askers
+	</select>
+<!-- 添加当天签到员工addAskersUsername -->
+<insert id="addAskersUsername" parameterType="Askers">
+insert into askers(askername,checkstate,checkintime,rolename,userid) values(#{askerName},#{checkState},#{checkInTime},#{roleName},#{userid})
+</insert>
+</mapper>

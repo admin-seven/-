@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yy.dao.UsersDao">
+	<select id="selectByname" parameterType="Users" resultType="Users">
+		SELECT
+		id,loginName,`passWord`,psdWrongTime,lockTime,lastLoginTime,isLockOut,protectMTel,protectEmail
+		FROM `users`
+		<where>
+			loginName=#{loginName}
+		</where>
+	</select>
+	<!-- 查询所有员工selectAllEmp -->
+	
+	<select id="selectAllEmp" parameterType="list" resultType="Users">
+	SELECT
+		id,loginName,`passWord`,psdWrongTime,lockTime,lastLoginTime,isLockOut,protectMTel,protectEmail
+		FROM `users`
+		<where>
+		id in
+		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+		#{item}
+		</foreach>
+		</where>
+	</select>
+	<update id="updateUserLoginInfo" parameterType="Users">
+		update `users`
+		<set>
+			<if test="passWord != null and passWord !=''">
+				passWord=#{passWord},
+			</if>
+			<if test="psdWrongTime !=null and psdWrongTime !='' ">
+				psdWrongTime=#{psdWrongTime},
+			</if>
+			<if test="isLockOut !=null and isLockOut !=''">
+				isLockOut=#{isLockOut},
+			</if>
+			<if test="lastLoginTime !=null and lastLoginTime !=''">
+				lastLoginTime=#{lastLoginTime},
+			</if>
+			<if test="lockTime !=null and lockTime !=''">
+				lockTime=#{lockTime},
+			</if>
+			<if test="protectEmail !=null and protectEmail !=''">
+				protectEmail=#{protectEmail},
+			</if>
+			<if test="protectMTel !=null and protectMTel !=''">
+				protectMTel=#{protectMTel},
+			</if>
+		</set>
+		<where>
+			id=#{id}
+		</where>
+	</update>
+	<!-- 查询所有用户信息 -->
+	<select id="selectAllUsers" parameterType="fenye" resultType="Users">
+		SELECT * FROM users
+		<where>
+			<if test="userName !=null and userName !=''">
+				and loginName like "%"#{userName }"%"
+			</if>
+			<if test="startTime !=null and startTime !=''">
+				and createTime &gt;=#{startTime }
+			</if>
+			<if test="endTime !=null and endTime !=''">
+				and createTime &lt;=#{endTime }
+			</if>
+			<if test="isclose !=null and isclose !=''">
+				and isLockOut=#{isclose}
+			</if>
+			<if test="list !=null and list.size() >0">
+				and id in
+				<foreach collection="list" index="index" item="item" open="("
+					separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		</where>
+		limit #{page},#{pageSize}
+	</select>
+	<!-- 分页查询 -->
+	<select id="selectCountUsers" parameterType="fenye" resultType="int">
+		SELECT COUNT(*) FROM users
+		<where>
+			<if test="userName !=null and userName !=''">
+				and loginName like "%"#{userName }"%"
+			</if>
+			<if test="startTime !=null and startTime !=''">
+				and createTime = #{startTime }
+			</if>
+			<if test="endTime !=null and endTime !=''">
+				and createTime = #{endTime }
+			</if>
+			<if test="isclose !=null and isclose !=''">
+				and isLockOut=#{isclose}
+			</if>
+			<if test="list !=null and list.size() >0">
+				and id in
+				<foreach collection="list" index="index" item="item" open="("
+					separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		</where>
+	</select>
+	<!-- 添加用户 -->
+	<insert id="addUsers" parameterType="Users">
+		insert into
+		users(loginName,passWord,isLockOut,createTime,protectEmail,protectMTel)
+		values(#{loginName},#{passWord},0,#{createTime},#{protectEmail},#{protectMTel})
+	</insert>
+	<!-- 删除用户 -->
+	<delete id="deleteUsers" parameterType="int">
+		delete from users where
+		id=#{id}
+	</delete>
+	<!-- 修改用户 -->
+	<update id="updateUsers" parameterType="Users">
+		update users
+		<set>
+			<if test="protectEmail!=null and protectEmail!=''">
+				protectEmail=#{protectEmail},
+			</if>
+			<if test="protectMTel!=null and protectMTel!=''">
+				protectMTel=#{protectMTel},
+			</if>
+		</set>
+		<where>
+			id=#{id}
+		</where>
+	</update>
+	<!-- 锁定，解锁用户 -->
+	<update id="updateYonghujiesoByisLockout" parameterType="Users">
+		update users
+		<set>
+			<if test="isLockOut != null">isLockOut=#{isLockOut}</if>
+		</set>
+		<where>
+			<if test="id !=null and id !=''">
+				id=#{id}
+			</if>
+		</where>
+	</update>
+	<!--重置密码 -->
+	<update id="updateResetpas" parameterType="Users">
+		update users
+		<set>
+			<if test="passWord != null and passWord != ''">passWord=#{passWord},</if>
+
+		</set>
+		<where>
+			<if test="id !=null and id !=''">
+				id=#{id}
+			</if>
+		</where>
+	</update>
+
+</mapper>

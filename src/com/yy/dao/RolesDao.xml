@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yy.dao.RolesDao">
+	<select id="selectRoles" resultType="Roles" parameterType="list">
+		SELECT id,name FROM `roles`
+		<where>
+			id in
+			<foreach collection="list" index="index" item="item" open="("
+				separator="," close=")">
+				#{item}
+			</foreach>
+		</where>
+	</select>
+	<select id="selectCountRoles" parameterType="fenye" resultType="int">
+		select count(*) from roles
+		<where>
+			<if test="rolesName!=null and rolesName!=''">
+				and name like "%"#{rolesName}"%"
+			</if>
+		</where>
+	</select>
+	<select id="selectAllRoles" parameterType="fenye" resultType="Roles">
+		SELECT id,name FROM `roles`
+		<where>
+			<if test="rolesName!=null and rolesName!=''">
+				and name like "%"#{rolesName}"%"
+			</if>
+		</where>
+		limit #{page},#{pageSize}
+	</select>
+	<delete id="delRoles" parameterType="int">
+		delete from roles where
+		id=#{id}
+	</delete>
+
+	<insert id="addRoles" parameterType="Roles">
+		insert into roles
+		(name)
+		values(#{name})
+	</insert>
+	<update id="updateRoles" parameterType="Roles">
+		update roles
+		set name=#{name}
+		<where>
+			id=#{id}
+		</where>
+	</update>
+	<select id="selectByName" parameterType="Roles" resultType="Roles">
+
+		select * from Roles where name=#{name}
+	</select>
+
+</mapper>
